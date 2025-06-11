@@ -28,7 +28,7 @@ int readIgnitionKey() {
   }
 
   const bool hasStarter = r & 1 << PIN_STARTER;
-  const bool hasIgnition = r & 1 << PIN_IGNITION;
+  //const bool hasIgnition = r & 1 << PIN_IGNITION;
 
   // Выключаем кнопку зажигания если нажат стартер
   // Чтобы для компьютера выглядело как разные нажатия кнопок (фикс для Beam.NG)

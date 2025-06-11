@@ -2,12 +2,16 @@ const int data = 4;
 const int latch = 5;
 const int clock = 6;
 
-const int TICK = 2;
+const int latchTick = 200;
+const int clkHalfTick = 150;
+const int TICK = 10;
 
 const int BT_UP = 1 << 3;
 const int BT_DOWN = 1 << 2;
 const int BT_LEFT = 1 << 1;
 const int BT_RIGHT = 1 << 0;
+
+const int BT_HAZARD = 1 << 7;
 
 
 void init_joystick()
@@ -22,19 +26,20 @@ void init_joystick()
 int get_keys_state_joystick()
 {
     digitalWrite(latch, HIGH);
-    delayMicroseconds(TICK);
+    delayMicroseconds(latchTick);
     digitalWrite(latch, LOW);
 
     int keys_state = 0;
 
     for (int i = 0; i < 8; ++i) {
-        delayMicroseconds(TICK);
+        delayMicroseconds(clkHalfTick);
         digitalWrite(clock, LOW);
+        delayMicroseconds(12);  // Ждём стабилизации DATA
 
         keys_state <<= 1;
         keys_state += digitalRead(data);
 
-        delayMicroseconds(TICK);
+        delayMicroseconds(clkHalfTick);
         digitalWrite(clock, HIGH);
     }
 
